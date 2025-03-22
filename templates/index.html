@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Strategy Wars</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="compact-header">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="{{ url_for('static', filename='images/logp.png') }}" alt="Strategy Wars Logo" class="header-logo">
+                </div>
+                <h1>Social Media Strategy Wars</h1>
+            </div>
+        </header>
+
+        <main>
+            <div class="profile-selection">
+                <div class="profile-card user-card" onclick="openModal('user')">
+                    <div class="profile-icon">👤</div>
+                    <h2>User</h2>
+                    <p>Access your social media strategy tools</p>
+                </div>
+
+                <div class="profile-card influencer-card" onclick="openModal('influencer')">
+                    <div class="profile-icon">🌟</div>
+                    <h2>Influencer</h2>
+                    <p>Login to view your analytics</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Social Media Strategy Wars</p>
+        </footer>
+    </div>
+
+    <!-- User Login Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('user')">&times;</span>
+            <h2>User Login</h2>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form action="{{ url_for('login') }}" method="POST">
+                <div class="form-group">
+                    <input type="text" name="username" placeholder="Enter your name" required>
+                </div>
+                <input type="hidden" name="user_type" value="user">
+                <button type="submit" class="btn">Continue</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Influencer Login Modal -->
+    <div id="influencerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('influencer')">&times;</span>
+            <h2>Influencer Login</h2>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form action="{{ url_for('login') }}" method="POST">
+                <div class="form-group">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <input type="hidden" name="user_type" value="influencer">
+                <button type="submit" class="btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal(type) {
+            document.getElementById(type + 'Modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+</html> 

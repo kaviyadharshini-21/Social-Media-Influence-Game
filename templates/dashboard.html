@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Social Media Strategy Wars</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-layout {
+            display: flex;
+            min-height: calc(100vh - 60px); /* Subtract header height */
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: white;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem 0;
+            flex-shrink: 0;
+        }
+
+        .nav-item {
+            padding: 0.8rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--secondary-color);
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .nav-item i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            background: var(--background-color);
+        }
+
+        /* Top Bar Styles */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+
+        .username {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-width: 180px;
+            display: none;
+            z-index: 1000;
+            margin-top: 0.5rem;
+        }
+
+        .profile-dropdown.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 0.8rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--secondary-color);
+        }
+
+        /* Content Placeholder */
+        .content-placeholder {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            color: #666;
+            margin-top: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .placeholder-icon {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard-layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 1rem 0;
+            }
+
+            .top-bar {
+                padding: 1rem;
+            }
+        }
+
+        /* Update header styles */
+        .compact-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.5rem 2rem;
+            text-align: left;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .compact-header img {
+            height: 40px;
+            width: auto;
+        }
+
+        .compact-header h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin: 0;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="compact-header">
+            <img src="{{ url_for('static', filename='images/logp.png') }}" alt="Strategy Wars Logo">
+            <h1>Social Media Strategy Wars</h1>
+        </header>
+
+        <div class="top-bar">
+            <div class="user-profile" onclick="toggleProfileDropdown()">
+                <div class="profile-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span class="username">{{ username }}</span>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-user-circle"></i> View Profile
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="dropdown-item">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-layout">
+            <nav class="sidebar">
+                <a href="#votes" class="nav-item" onclick="showContent('votes')">
+                    <i class="fas fa-chart-bar"></i>
+                    Votes Gained
+                </a>
+                <a href="#improve" class="nav-item" onclick="showContent('improve')">
+                    <i class="fas fa-arrow-trend-up"></i>
+                    Areas to Improve
+                </a>
+                <a href="#evolution" class="nav-item" onclick="showContent('evolution')">
+                    <i class="fas fa-chart-line"></i>
+                    Evolutionary Analysis
+                </a>
+                <a href="#strategy" class="nav-item" onclick="showContent('strategy')">
+                    <i class="fas fa-chess"></i>
+                    Optimal Strategy
+                </a>
+            </nav>
+
+            <main class="main-content">
+                <div id="contentArea" class="content-placeholder">
+                    <div class="placeholder-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h2>Select a section from the sidebar</h2>
+                    <p>Choose an option from the left menu to view detailed analytics and insights.</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('show');
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.user-profile')) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        }
+
+        function showContent(section) {
+            const contentArea = document.getElementById('contentArea');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            // Remove active class from all nav items
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            // Add active class to clicked nav item
+            event.currentTarget.classList.add('active');
+
+            // Update content area with placeholder
+            let content = '<div class="placeholder-icon">';
+            switch(section) {
+                case 'votes':
+                    content += '<i class="fas fa-chart-bar"></i></div>';
+                    content += '<h2>Votes Gained</h2>';
+                    content += '<p>This section will display your voting statistics and trends.</p>';
+                    break;
+                case 'improve':
+                    content += '<i class="fas fa-arrow-trend-up"></i></div>';
+                    content += '<h2>Areas to Improve</h2>';
+                    content += '<p>View personalized recommendations for improvement.</p>';
+                    break;
+                case 'evolution':
+                    content += '<i class="fas fa-chart-line"></i></div>';
+                    content += '<h2>Evolutionary Analysis</h2>';
+                    content += '<p>Track your growth and performance evolution over time.</p>';
+                    break;
+                case 'strategy':
+                    content += '<i class="fas fa-chess"></i></div>';
+                    content += '<h2>Optimal Strategy (Nash Equilibrium)</h2>';
+                    content += '<p>Discover optimal strategies based on game theory analysis.</p>';
+                    break;
+            }
+            contentArea.innerHTML = content;
+        }
+    </script>
+</body>
+</html> 
