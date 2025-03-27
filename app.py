@@ -78,9 +78,28 @@ def logout():
 
 @app.route('/dashboard')
 def dashboard():
-    if 'username' not in session or session['user_type'] != 'influencer':
+    if 'username' not in session:
         return redirect(url_for('index'))
-    return render_template('dashboard.html', username=session['username'])
+    
+    connection = get_db_connection()
+    if connection:
+        try:
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM users WHERE username = %s", (session['username'],))
+            user_data = cursor.fetchone()
+            
+            if user_data:
+                return render_template('dashboard.html', user_data=user_data)
+            else:
+                return redirect(url_for('logout'))
+        except Error as e:
+            print(f"Database error: {e}")
+            return redirect(url_for('logout'))
+        finally:
+            cursor.close()
+            connection.close()
+    
+    return redirect(url_for('index'))
 
 @app.route('/voting')
 def voting():
@@ -169,6 +188,15 @@ def submit_votes():
             connection.close()
     
     return jsonify({'success': False, 'message': 'Database connection error'})
+
+# Add a template filter to format large numbers
+@app.template_filter('format_number')
+def format_number(value):
+    if value >= 1000000:
+        return f"{value/1000000:.1f}M"
+    elif value >= 1000:
+        return f"{value/1000:.1f}K"
+    return str(value)
 
 if __name__ == '__main__':
     app.run(debug=True) 

@@ -4,106 +4,385 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social Media Strategy Wars</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <header class="compact-header">
-            <div class="header-content">
-                <div class="logo-container">
-                    <img src="{{ url_for('static', filename='images/logp.png') }}" alt="Strategy Wars Logo" class="header-logo">
-                </div>
-                <h1>Social Media Strategy Wars</h1>
-            </div>
-        </header>
-
-        <main>
-            <div class="profile-selection">
-                <div class="profile-card user-card" onclick="openModal('user')">
-                    <div class="profile-icon">👤</div>
-                    <h2>User</h2>
-                    <p>Access your social media strategy tools</p>
-                </div>
-
-                <div class="profile-card influencer-card" onclick="openModal('influencer')">
-                    <div class="profile-icon">🌟</div>
-                    <h2>Influencer</h2>
-                    <p>Login to view your analytics</p>
-                </div>
-            </div>
-        </main>
-
-        <footer>
-            <p>&copy; 2024 Social Media Strategy Wars</p>
-        </footer>
-    </div>
-
-    <!-- User Login Modal -->
-    <div id="userModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('user')">&times;</span>
-            <h2>User Login</h2>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-            <form action="{{ url_for('login') }}" method="POST">
-                <div class="form-group">
-                    <input type="text" name="username" placeholder="Enter your name" required>
-                </div>
-                <input type="hidden" name="user_type" value="user">
-                <button type="submit" class="btn">Continue</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Influencer Login Modal -->
-    <div id="influencerModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('influencer')">&times;</span>
-            <h2>Influencer Login</h2>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-            <form action="{{ url_for('login') }}" method="POST">
-                <div class="form-group">
-                    <input type="text" name="username" placeholder="Username" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" name="password" placeholder="Password" required>
-                </div>
-                <input type="hidden" name="user_type" value="influencer">
-                <button type="submit" class="btn">Login</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        function openModal(type) {
-            document.getElementById(type + 'Modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-darkest: #150734;
+            --primary-dark:rgb(28, 52, 108);
+            --primary-medium: #28559A;
+            --primary-light: #3778C2;
+            --text-dark: #1a1a2e;
+            --text-muted: #666666;
+            --background-light: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --hover-transition: all 0.3s ease;
         }
 
-        function closeModal(type) {
-            document.getElementById(type + 'Modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .compact-header {
+            background: var(--primary-darkest);
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1.5rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo-container {
+            margin-right: 1rem;
+        }
+
+        .header-logo {
+            height: 50px;
+            width: auto;
+        }
+
+        .header-content h1 {
+            color: white;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h2 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            width: 400px;
+            box-shadow: var(--card-shadow);
+            transition: var(--hover-transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            padding: 1rem;
+            border-radius: 50%;
+        }
+
+        .user-card .card-icon {
+            color: var(--primary-medium);
+            background: rgba(40, 85, 154, 0.1);
+        }
+
+        .influencer-card .card-icon {
+            color: var(--primary-dark);
+            background: rgba(15, 37, 87, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .feature-list li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li:before {
+            content: '•';
+            color: var(--primary-medium);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--hover-transition);
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-blue {
+            background: linear-gradient(135deg, var(--primary-medium), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-orange {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-darkest));
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .flash-messages {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+        }
+
+        .flash-message {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            background: #ff4444;
+            color: white;
+        }
+
+        footer {
+            background: var(--primary-darkest);
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+            margin-top: 2rem;
+        }
+
+        footer p {
+            color: white;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="compact-header">
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='images/logp.png') }}" alt="Strategy Wars Logo" class="header-logo">
+            </div>
+            <h1>Social Media Strategy Wars</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Choose Your Path</h2>
+            <p>Select your role to access the tools you need</p>
+        </div>
+
+        <div class="cards-container">
+            <!-- User Card -->
+            <div class="card user-card">
+                <span class="card-icon">
+                    <i class="fas fa-user"></i>
+                </span>
+                <h2>User</h2>
+                <p>Access your social media strategy tools</p>
+                <ul class="feature-list">
+                    <li>Content calendar & scheduling</li>
+                    <li>AI post generation</li>
+                    <li>Performance analytics</li>
+                </ul>
+                <button class="btn btn-blue" onclick="openModal('userModal')">Get Started</button>
+            </div>
+
+            <!-- Influencer Card -->
+            <div class="card influencer-card">
+                <span class="card-icon">
+                    <i class="fas fa-star"></i>
+                </span>
+                <h2>Influencer</h2>
+                <p>Login to view your analytics</p>
+                <ul class="feature-list">
+                    <li>Advanced audience analytics</li>
+                    <li>Brand deal management</li>
+                    <li>Engagement optimization</li>
+                </ul>
+                <button class="btn btn-orange" onclick="openModal('influencerModal')">Login Now</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Social Media Strategy Wars</p>
+    </footer>
+
+    <!-- User Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('userModal')">&times;</span>
+            <h2>Enter Your Name</h2>
+            <form action="{{ url_for('login') }}" method="post">
+                <input type="hidden" name="user_type" value="user">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <button type="submit" class="btn btn-blue">Start Voting</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Influencer Modal -->
+    <div id="influencerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('influencerModal')">&times;</span>
+            <h2>Influencer Login</h2>
+            <form action="{{ url_for('login') }}" method="post">
+                <input type="hidden" name="user_type" value="influencer">
+                <div class="form-group">
+                    <label for="influencer_username">Username</label>
+                    <input type="text" id="influencer_username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-orange">Login</button>
+            </form>
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash-message {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
         }
 
         // Close modal when clicking outside
         window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
+            if (event.target.className === 'modal') {
                 event.target.style.display = 'none';
-                document.body.style.overflow = 'auto';
             }
         }
+
+        // Auto-hide flash messages
+        setTimeout(function() {
+            var flashMessages = document.getElementsByClassName('flash-message');
+            for(var i = 0; i < flashMessages.length; i++) {
+                flashMessages[i].style.display = 'none';
+            }
+        }, 3000);
     </script>
 </body>
 </html> 
