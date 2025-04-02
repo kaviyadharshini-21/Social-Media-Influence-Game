@@ -282,6 +282,476 @@
             cursor: pointer;
             color: var(--text-muted);
         }
+
+        .votes-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .strategy-info {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .strategy-info h3 {
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .strategy-info p {
+            color: var(--text-muted);
+        }
+
+        .votes-grid {
+            display: flex;
+            justify-content: center;
+        }
+
+        .votes-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .votes-table th,
+        .votes-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .votes-table th {
+            background: var(--background-light);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .votes-table tr:hover {
+            background: var(--background-light);
+        }
+
+        .votes-table td {
+            color: var(--text-dark);
+        }
+
+        .votes-summary {
+            margin-bottom: 2rem;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+
+        .summary-card i {
+            font-size: 2rem;
+            color: var(--primary-medium);
+            margin-bottom: 1rem;
+        }
+
+        .big-number {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .growth-list {
+            margin-top: 1rem;
+        }
+
+        .growth-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .positive {
+            color: #28a745;
+        }
+
+        .negative {
+            color: #dc3545;
+        }
+
+        .sub-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .votes-section {
+            padding: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header-content h2 {
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .strategy-badge {
+            background: var(--primary-darkest);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: var(--hover-transition);
+        }
+
+        .summary-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-card i {
+            font-size: 1.8rem;
+            color: var(--primary-medium);
+            margin-bottom: 1rem;
+        }
+
+        .big-number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin: 0.5rem 0;
+        }
+
+        .votes-container {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-header h3 {
+            color: var(--primary-dark);
+            font-size: 1.2rem;
+        }
+
+        .action-btn {
+            background: var(--primary-medium);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--hover-transition);
+        }
+
+        .action-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .votes-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .votes-table th {
+            background: var(--background-light);
+            color: var(--primary-dark);
+            font-weight: 600;
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-medium);
+        }
+
+        .votes-table th i {
+            margin-right: 0.5rem;
+            color: var(--primary-medium);
+        }
+
+        .votes-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .month-cell {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .votes-table tr:hover td {
+            background: var(--background-light);
+        }
+
+        .growth-list {
+            margin-top: 1rem;
+        }
+
+        .growth-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .positive {
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        .negative {
+            color: #dc3545;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .areas-improve-section {
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .analysis-badge {
+            background: var(--primary-medium);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .analysis-card {
+            background: var(--background-light);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: var(--hover-transition);
+        }
+
+        .analysis-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background: var(--primary-darkest);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .card-header i {
+            font-size: 1.5rem;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .analysis-content {
+            padding: 1.5rem;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .improvement-points h4 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
+        .improvement-points ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .improvement-points li {
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: white;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-medium);
+        }
+
+        .point-header {
+            display: block;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .improvement-points p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .areas-improve-section {
+                padding: 1rem;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Areas to Improve Additional Styles */
+        .no-data-message {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            grid-column: 1 / -1;
+        }
+
+        .no-data-message i {
+            font-size: 2rem;
+            color: var(--primary-medium);
+            margin-bottom: 1rem;
+        }
+
+        .no-data-message p {
+            color: var(--text-muted);
+        }
+
+        .analysis-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .analysis-content {
+            flex-grow: 1;
+            background: white;
+        }
+
+        .improvement-points ul li {
+            position: relative;
+            padding-left: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .improvement-points ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        .improvement-points ul li::before {
+            content: '';
+            position: absolute;
+            left: -3px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--primary-medium);
+            border-radius: 3px;
+        }
+
+        .point-header {
+            color: var(--primary-dark);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .card-header {
+            background: linear-gradient(to right, var(--primary-darkest), var(--primary-dark));
+            padding: 1.2rem;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .card-header i {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.8rem;
+            border-radius: 8px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -308,10 +778,6 @@
 
         <div class="dashboard-layout">
             <nav class="sidebar">
-                <a href="#votes" class="nav-item" onclick="showContent('votes')">
-                    <i class="fas fa-chart-bar"></i>
-                    Votes Gained
-                </a>
                 <a href="#improve" class="nav-item" onclick="showContent('improve')">
                     <i class="fas fa-arrow-trend-up"></i>
                     Areas to Improve
@@ -328,11 +794,89 @@
 
             <main class="main-content">
                 <div id="contentArea" class="content-placeholder">
-                    <div class="placeholder-icon">
-                        <i class="fas fa-chart-pie"></i>
+                    <div class="votes-section">
+                        <div class="section-header">
+                            <div class="header-content">
+                                <h2>Votes Gained</h2>
+                                <p class="subtitle">Strategy Performance Analysis for {{ user_data.username }}</p>
+                            </div>
+                            <div class="strategy-badge">
+                                Strategy {{ strategy }}
+                            </div>
+                        </div>
+
+                        <!-- Summary Cards -->
+                        <div class="summary-cards">
+                            <div class="summary-card">
+                                <i class="fas fa-chart-line"></i>
+                                <h3>Total Votes</h3>
+                                <p class="big-number">{{ vote_stats.total_votes | format_number }}</p>
+                                <p class="sub-text">Across all months</p>
+                            </div>
+                            <div class="summary-card">
+                                <i class="fas fa-trophy"></i>
+                                <h3>Best Strategy</h3>
+                                <p class="big-number">{{ vote_stats.highest_category.name }}</p>
+                                <p class="sub-text">{{ vote_stats.highest_category.votes | format_number }} votes</p>
+                            </div>
+                            <div class="summary-card">
+                                <i class="fas fa-arrow-trend-up"></i>
+                                <h3>Growth Trend</h3>
+                                <div class="growth-list">
+                                    {% for growth in vote_stats.monthly_growth %}
+                                    <div class="growth-item">
+                                        <span>{{ growth.month }}</span>
+                                        <span class="{% if growth.growth > 0 %}positive{% else %}negative{% endif %}">
+                                            {{ "%.1f"|format(growth.growth) }}%
+                                        </span>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Monthly Performance Table -->
+                        <div class="votes-container">
+                            <div class="table-header">
+                                <h3>Monthly Performance Breakdown</h3>
+                                <div class="table-actions">
+                                    <button class="action-btn" onclick="exportData()">
+                                        <i class="fas fa-download"></i> Export
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="votes-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Month</th>
+                                            <th><i class="fas fa-trending-up"></i> Viral Trends</th>
+                                            <th><i class="fas fa-brain"></i> Expertise</th>
+                                            <th><i class="fas fa-mouse-pointer"></i> Clickbait</th>
+                                            <th><i class="fas fa-star"></i> Quality</th>
+                                            <th><i class="fas fa-comments"></i> Engagement</th>
+                                            <th><i class="fas fa-ad"></i> Promotion</th>
+                                            <th><i class="fas fa-laugh"></i> Memes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for month in vote_data %}
+                                        <tr>
+                                            <td class="month-cell">{{ month.month }}</td>
+                                            <td>{{ month.viral_trends | format_number }}</td>
+                                            <td>{{ month.expertise | format_number }}</td>
+                                            <td>{{ month.clickbait | format_number }}</td>
+                                            <td>{{ month.quality | format_number }}</td>
+                                            <td>{{ month.engagement | format_number }}</td>
+                                            <td>{{ month.promotion | format_number }}</td>
+                                            <td>{{ month.memes | format_number }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <h2>Select a section from the sidebar</h2>
-                    <p>Choose an option from the left menu to view detailed analytics and insights.</p>
                 </div>
             </main>
         </div>
@@ -412,31 +956,30 @@
             // Add active class to clicked nav item
             event.currentTarget.classList.add('active');
 
-            // Update content area with placeholder
-            let content = '<div class="placeholder-icon">';
-            switch(section) {
-                case 'votes':
-                    content += '<i class="fas fa-chart-bar"></i></div>';
-                    content += '<h2>Votes Gained</h2>';
-                    content += '<p>This section will display your voting statistics and trends.</p>';
-                    break;
-                case 'improve':
-                    content += '<i class="fas fa-arrow-trend-up"></i></div>';
-                    content += '<h2>Areas to Improve</h2>';
-                    content += '<p>View personalized recommendations for improvement.</p>';
-                    break;
-                case 'evolution':
-                    content += '<i class="fas fa-chart-line"></i></div>';
-                    content += '<h2>Evolutionary Analysis</h2>';
-                    content += '<p>Track your growth and performance evolution over time.</p>';
-                    break;
-                case 'strategy':
-                    content += '<i class="fas fa-chess"></i></div>';
-                    content += '<h2>Optimal Strategy (Nash Equilibrium)</h2>';
-                    content += '<p>Discover optimal strategies based on game theory analysis.</p>';
-                    break;
+            if (section === 'improve') {
+                contentArea.innerHTML = `
+                    <div class="areas-improve-section">
+                        <div class="section-header">
+                            <div class="header-content">
+                                <h2>Areas to Improve</h2>
+                                <p class="subtitle">AI-Powered Performance Analysis</p>
+                            </div>
+                            <div class="analysis-badge">
+                                Game Theory Analysis
+                            </div>
+                        </div>
+                        <div class="analysis-content">
+                            <div class="markdown-content">
+                                {{ improvement_data | markdown | safe }}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (section === 'evolution') {
+                // ... existing evolution section code ...
+            } else if (section === 'strategy') {
+                // ... existing strategy section code ...
             }
-            contentArea.innerHTML = content;
         }
 
         function showProfile(event) {
@@ -455,6 +998,16 @@
                 closeProfile();
             }
         });
+
+        function showVotes() {
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = document.getElementById('votes').innerHTML;
+        }
+
+        function exportData() {
+            // Placeholder for export functionality
+            alert('Export functionality will be implemented soon');
+        }
     </script>
 </body>
 </html> 

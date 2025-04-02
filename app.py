@@ -1,9 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 import mysql.connector
 from mysql.connector import Error
+from main import DataProcessor
+import os
+from dotenv import load_dotenv
+import markdown2  # Add this import
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'  # Required for flash messages
+app.secret_key = os.getenv('FLASK_SECRET_KEY', 'your-secret-key-here')  # Get from environment or use default
 
 # MySQL Configuration
 db_config = {
@@ -20,6 +27,11 @@ def get_db_connection():
     except Error as e:
         print(f"Error connecting to MySQL: {e}")
         return None
+
+# Add Markdown filter
+@app.template_filter('markdown')
+def markdown_filter(text):
+    return markdown2.markdown(text)
 
 @app.route('/')
 def index():
@@ -84,19 +96,37 @@ def dashboard():
     connection = get_db_connection()
     if connection:
         try:
-            cursor = connection.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM users WHERE username = %s", (session['username'],))
-            user_data = cursor.fetchone()
+            data_processor = DataProcessor(connection)
             
-            if user_data:
-                return render_template('dashboard.html', user_data=user_data)
-            else:
+            # Get user profile
+            user_data = data_processor.get_user_profile(session['username'])
+            if not user_data:
                 return redirect(url_for('logout'))
+            
+            # Get vote counts and strategy
+            vote_data, strategy = data_processor.get_vote_counts(session['username'])
+            
+            # Calculate additional statistics
+            vote_stats = data_processor.calculate_vote_statistics(vote_data)
+            
+            # Get improvement analysis
+            try:
+                improvement_data = data_processor.Areas_to_improve(vote_data, user_data)
+            except Exception as e:
+                print(f"Error getting improvement data: {str(e)}")
+                improvement_data = "# Error\nUnable to generate analysis at this time."
+            
+            return render_template('dashboard.html', 
+                                user_data=user_data,
+                                vote_data=vote_data,
+                                vote_stats=vote_stats,
+                                strategy=strategy,
+                                improvement_data=improvement_data)
+            
         except Error as e:
             print(f"Database error: {e}")
             return redirect(url_for('logout'))
         finally:
-            cursor.close()
             connection.close()
     
     return redirect(url_for('index'))
