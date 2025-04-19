@@ -8,16 +8,18 @@ from dotenv import load_dotenv
 # Load environment variables at the start of the file
 load_dotenv()
 
-# Get API key
-GROQ_API_KEY = "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"
+# Get API key from environment variables
+GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY environment variable is not set")
 
+# Database configuration using environment variables
 db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'kaviya2004',
-    'database': 'Social_Media_Influencer_Game'
+    'host': os.getenv('DB_HOST', 'localhost'),
+    'user': os.getenv('DB_USER', 'root'),
+    'password': os.getenv('DB_PASSWORD', ''),
+    'database': os.getenv('DB_NAME', 'Social_Media_Influencer_Game'),
+    'port': int(os.getenv('DB_PORT', '3306'))
 }
 
 def get_db_connection():
@@ -37,8 +39,8 @@ def voting_details(username, password):
         cursor = connection.cursor(dictionary=True)
         
         # Query to check credentials against users table
-        query = "SELECT * FROM votes_month1 where viral_trend_riding =='l1' "
-        query="select * from votes_month1 where "
+        query = "SELECT * FROM Votes where MONTH(V_Date) = 1 and viral_trend_riding =='l1' "
+        query="select * from Votes where "
         cursor.execute(query, (username.lower(), password))
         
         user = cursor.fetchone()
@@ -88,7 +90,7 @@ class DataProcessor:
                     COUNT(CASE WHEN Paid_Promotion = %s THEN 1 END) as promotion,
                     COUNT(CASE WHEN Memes_Humor = %s THEN 1 END) as memes,
                     COUNT(*) as total_votes
-                FROM votes_month1
+                FROM Votes WHERE MONTH(V_Date) = 1
                 UNION ALL
                 SELECT 
                     'Month 2' as month,
@@ -100,7 +102,7 @@ class DataProcessor:
                     COUNT(CASE WHEN Paid_Promotion = %s THEN 1 END) as promotion,
                     COUNT(CASE WHEN Memes_Humor = %s THEN 1 END) as memes,
                     COUNT(*) as total_votes
-                FROM votes_month2
+                FROM Votes WHERE MONTH(V_Date) = 2
                 UNION ALL
                 SELECT 
                     'Month 3' as month,
@@ -112,7 +114,7 @@ class DataProcessor:
                     COUNT(CASE WHEN Paid_Promotion = %s THEN 1 END) as promotion,
                     COUNT(CASE WHEN Memes_Humor = %s THEN 1 END) as memes,
                     COUNT(*) as total_votes
-                FROM votes_month3
+                FROM Votes WHERE MONTH(V_Date) = 3
                 UNION ALL
                 SELECT 
                     'Month 4' as month,
@@ -124,7 +126,7 @@ class DataProcessor:
                     COUNT(CASE WHEN Paid_Promotion = %s THEN 1 END) as promotion,
                     COUNT(CASE WHEN Memes_Humor = %s THEN 1 END) as memes,
                     COUNT(*) as total_votes
-                FROM votes_month4
+                FROM Votes WHERE MONTH(V_Date) = 4
             """
             
             params = [strategy] * 28  # 7 strategies * 4 months
@@ -174,8 +176,14 @@ class DataProcessor:
 
         return total_stats
 
-    def Areas_to_improve(self, Vote_cnt, influencer_details):
+    def Areas_to_improve(self, Vote_cnt, influencer_details, nash_result=None, evlo_result=None):
         try:
+            # Set default values if parameters are missing
+            if nash_result is None:
+                nash_result = "Not available"
+            if evlo_result is None:
+                evlo_result = "Not available"
+                
             client = Groq(
                 api_key="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"
             )
@@ -192,17 +200,99 @@ class DataProcessor:
 
     Influencer Profile:
     {influencer_details}
+    Nash Equilibrium Results:
+    {nash_result}
+    Evolutionary Analysis Results:
+    {evlo_result}
            Provide a concise summary of key insights from the analysis.
-
-    Use bullet points for clarity and structured results.
-
-    Present findings in an actionable format, highlighting trends and implications.
 
     Keep explanations clear and free of unnecessary complexity.
 
     Offer data-driven reasoning behind insights.
 
+    Format your response using proper Markdown syntax:
+    - Use # for main headings, ## for subheadings
+    - Use **bold** for important points
+    - Use bullet points for listing insights
+    - Use numbered lists for recommendations
+    - Use `code` formatting for metrics or data values
+
     Take a deep breath and work on this problem step-by-step.
+            """
+
+            chat_completion = client.chat.completions.create(
+                messages=[{
+                    "role": "user",
+                    "content": analysis_prompt
+                }],
+                model="llama-3.3-70b-versatile",
+                temperature=1,
+                max_tokens=700
+            )
+            response = chat_completion.choices[0].message.content
+            
+            # Clean and format the response
+            response = self._clean_markdown_response(response)
+            
+            return response
+            
+        except Exception as e:
+            print(f"Error in Areas_to_improve: {str(e)}")
+            return "Error generating analysis. Please try again later."
+    
+    def _clean_markdown_response(self, text):
+        """
+        Clean and format markdown response from LLM to ensure proper rendering
+        """
+        if not text:
+            return ""
+            
+        # Ensure proper heading formatting
+        lines = text.split('\n')
+        cleaned_lines = []
+        
+        for line in lines:
+            # Fix headings without space after #
+            line = line.replace('#', '# ').replace('# #', '##').replace('## #', '###').replace('### #', '####')
+            
+            # Fix headers with too many spaces
+            line = line.replace('# # ', '## ').replace('# # # ', '### ')
+            
+            # Ensure bold formatting has spaces
+            line = line.replace('**', ' ** ').replace(' ** ** ', ' **').replace('** ** ', '** ')
+            line = line.replace('  **', ' **').replace('**  ', '** ')
+            
+            # Remove excessive blank lines
+            if line.strip() or (not line.strip() and (not cleaned_lines or cleaned_lines[-1].strip())):
+                cleaned_lines.append(line)
+        
+        # Ensure list items have proper spacing
+        text = '\n'.join(cleaned_lines)
+        
+        # Fix bullet points
+        text = text.replace('•', '-')
+        
+        # Ensure there's a blank line before lists
+        text = text.replace('\n- ', '\n\n- ')
+        text = text.replace('\n1. ', '\n\n1. ')
+        
+        # Ensure there's a blank line before headings
+        for i in range(5, 0, -1):
+            heading = '#' * i + ' '
+            text = text.replace('\n' + heading, '\n\n' + heading)
+            
+        return text
+
+    def nash_equi(self,votes,inf_det):
+        try:
+            client = Groq(
+                api_key="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"
+            )
+            
+            analysis_prompt = f"""
+            
+                    {votes}
+                    {inf_det}
             """
 
             chat_completion = client.chat.completions.create(
