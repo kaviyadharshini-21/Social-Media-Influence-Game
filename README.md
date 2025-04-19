@@ -1,6 +1,8 @@
 # Social Media Influencer Game Theory Analysis
 
 A web application that analyzes social media influencer strategies using game theory concepts, particularly Nash Equilibrium and evolutionary game theory.
+![image](https://github.com/user-attachments/assets/be201e9e-c06c-4980-9c8a-9bbfe22fa8cd)
+
 
 ## Features
 
